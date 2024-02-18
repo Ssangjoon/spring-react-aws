@@ -3,6 +3,7 @@ package com.todo.springreactaws.controller;
 import com.todo.springreactaws.dto.ResponseDTO;
 import com.todo.springreactaws.dto.UserDTO;
 import com.todo.springreactaws.model.UserEntity;
+import com.todo.springreactaws.security.TokenProvider;
 import com.todo.springreactaws.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
+    private final TokenProvider tokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -56,9 +58,11 @@ public class UserController {
                 userDTO.getPassword());
 
         if(user != null) {
+            final String token = tokenProvider.create(user);
             final UserDTO responseUserDTO = UserDTO.builder()
                     .username(user.getUsername())
                     .id(user.getId())
+                    .token(token)
                     .build();
             return ResponseEntity.ok().body(responseUserDTO);
         } else {
