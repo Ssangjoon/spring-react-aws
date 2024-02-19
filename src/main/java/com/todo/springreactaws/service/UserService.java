@@ -15,11 +15,11 @@ public class UserService {
     private UserRepository userRepository;
 
     public UserEntity create(final UserEntity userEntity) {
-        if(userEntity == null || userEntity.getUsername() == null ) {
+        if (userEntity == null || userEntity.getUsername() == null) {
             throw new RuntimeException("Invalid arguments");
         }
         final String username = userEntity.getUsername();
-        if(userRepository.existsByUsername(username)) {
+        if (userRepository.existsByUsername(username)) {
             log.warn("Username already exists {}", username);
             throw new RuntimeException("Username already exists");
         }
@@ -28,11 +28,10 @@ public class UserService {
     }
 
     public UserEntity getByCredentials(final String username, final String password, final PasswordEncoder encoder) {
-        UserEntity originalUser = userRepository.findByUsernameAndPassword(username, password);
-        if(originalUser != null && encoder.matches(password, originalUser.getPassword())){
+        UserEntity originalUser = userRepository.findByUsername(username);
+        if (originalUser != null && encoder.matches(password, originalUser.getPassword())) {
             return originalUser;
         }
         return null;
     }
-
 }

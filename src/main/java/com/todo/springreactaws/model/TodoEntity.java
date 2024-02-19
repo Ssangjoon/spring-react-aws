@@ -1,11 +1,12 @@
 package com.todo.springreactaws.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Builder
 @NoArgsConstructor
@@ -14,7 +15,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "Todo")
 public class TodoEntity {
-    @Id @GeneratedValue(generator = "system-uuid")
+    @Id
+    @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
     private String userId;
